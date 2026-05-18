@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dienstplan – Ida-Sophie Kranz & Kollegen</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --c-v:  #C6EFCE; --c-n: #BDD7EE; --c-g: #FFEB9C;
+    --c-u:  #F4CCCC; --c-k: #FCE4D6; --c-f: #EFEFEF;
+    --c-we: #D9D9D9; --c-drag: #4472C4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; background: #f0f2f5; }
+
+  header {
+    background: #1a3a6b; color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 16px; font-weight: bold; flex: 1; }
+  header .nav { display: flex; align-items: center; gap: 8px; }
+  header button {
+    background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4);
+    padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 13px;
+  }
+  header button:hover { background: rgba(255,255,255,0.35); }
+  #monat-label { font-weight: bold; min-width: 140px; text-align: center; font-size: 15px; }
+
+  .toolbar {
+    background: #fff; border-bottom: 1px solid #ccc; padding: 8px 16px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .toolbar span { font-weight: bold; color: #444; }
+
+  .schicht-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 16px; border: 2px solid #bbb;
+    cursor: grab; font-weight: bold; font-size: 13px; user-select: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .schicht-chip:active { cursor: grabbing; }
+  .schicht-chip.dragging { opacity: 0.5; transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
+  .toolbar-right { margin-left: auto; display: flex; gap: 8px; }
+  .btn-export {
+    background: #1a7a3a; color: #fff; border: none; padding: 6px 16px;
+    border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold;
+  }
+  .btn-export:hover { background: #155f2d; }
+  .btn-print {
+    background: #1a3a6b; color: #fff; border: none; padding: 6px 16px;
+    border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold;
+  }
+  .btn-print:hover { background: #122d54; }
+
+  .wrapper { overflow-x: auto; padding: 12px; }
+
+  table { border-collapse: collapse; background: #fff; min-width: 100%; }
+  th, td {
+    border: 1px solid #ccc; padding: 4px 6px; text-align: center;
+    white-space: nowrap;
+  }
+  thead th {
+    background: #1a3a6b; color: #fff; font-size: 12px; position: sticky; top: 0; z-index: 2;
+  }
+  thead th.rolle { font-size: 10px; color: #c8d8f0; font-weight: normal; }
+  td.datum { text-align: left; font-size: 12px; color: #555; background: #f9f9f9; min-width: 90px; }
+  td.wt { font-weight: bold; width: 30px; }
+  td.oez { font-size: 11px; color: #666; background: #f5f5f5; min-width: 130px; }
+
+  tr.wochenende td { background: var(--c-we) !important; color: #888; }
+  tr.wochenende td.schicht-cell { cursor: default; }
+
+  td.schicht-cell {
+    width: 70px; min-width: 70px; font-weight: bold; font-size: 13px;
+    cursor: pointer; transition: opacity 0.15s;
+    position: relative;
+  }
+  td.schicht-cell:hover:not(.we) { opacity: 0.75; }
+  td.schicht-cell.dragover { outline: 3px solid var(--c-drag); outline-offset: -2px; }
+
+  .s-V  { background: var(--c-v); }
+  .s-N  { background: var(--c-n); }
+  .s-G  { background: var(--c-g); }
+  .s-U  { background: var(--c-u); }
+  .s-K  { background: var(--c-k); }
+  .s-F  { background: var(--c-f); }
+  .s-WE { background: var(--c-we); }
+
+  tfoot td { background: #f0f4fa; font-weight: bold; font-size: 12px; }
+  tfoot .stat-label { text-align: left; }
+
+  .toast {
+    position: fixed; bottom: 20px; right: 20px; background: #1a7a3a; color: #fff;
+    padding: 10px 18px; border-radius: 6px; font-size: 13px; opacity: 0;
+    transition: opacity 0.3s; pointer-events: none; z-index: 999;
+  }
+  .toast.show { opacity: 1; }
+
+  @media print {
+    header, .toolbar { display: none !important; }
+    body { background: #fff; }
+    .wrapper { padding: 0; overflow: visible; }
+    table { font-size: 10px; }
+    td.schicht-cell { width: 50px; min-width: 50px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dienstplan – Ida-Sophie Kranz &amp; Kollegen, Essen</h1>
+  <div class="nav">
+    <button id="btn-prev">◀</button>
+    <span id="monat-label"></span>
+    <button id="btn-next">▶</button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <span>Schicht ziehen oder Zelle klicken:</span>
+  <div class="schicht-chip s-V" draggable="true" data-code="V">V &nbsp;Vormittag</div>
+  <div class="schicht-chip s-N" draggable="true" data-code="N">N &nbsp;Nachmittag</div>
+  <div class="schicht-chip s-G" draggable="true" data-code="G">G &nbsp;Ganztag</div>
+  <div class="schicht-chip s-U" draggable="true" data-code="U">U &nbsp;Urlaub</div>
+  <div class="schicht-chip s-K" draggable="true" data-code="K">K &nbsp;Krankheit</div>
+  <div class="schicht-chip s-F" draggable="true" data-code="F">F &nbsp;Frei</div>
+  <div class="toolbar-right">
+    <button class="btn-export" id="btn-export">⬇ Excel exportieren</button>
+    <button class="btn-print" onclick="window.print()">🖨 Drucken</button>
+  </div>
+</div>
+
+<div class="wrapper">
+  <table id="plan-table">
+    <thead id="thead"></thead>
+    <tbody id="tbody"></tbody>
+    <tfoot id="tfoot"></tfoot>
+  </table>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Stammdaten ────────────────────────────────────────────────────────────────
+const MITARBEITER = [
+  { name: "Dr. Schmidt",   rolle: "Zahnärztin" },
+  { name: "Dr. Hoffmann",  rolle: "Zahnärztin" },
+  { name: "Dr. Wagner",    rolle: "Zahnärztin" },
+  { name: "Sandra Becker", rolle: "Prophylaxe-assistentin" },
+  { name: "Miriam Schulz", rolle: "Prophylaxe-assistentin" },
+  { name: "Petra Lange",   rolle: "Dentalhygienikerin" },
+  { name: "Anna Weber",    rolle: "ZFA" },
+  { name: "Lisa Braun",    rolle: "ZFA" },
+  { name: "Tanja Fischer", rolle: "ZFA" },
+  { name: "Jana Koch",     rolle: "Verwaltungs-assistentin" },
+  { name: "Maria Richter", rolle: "Verwaltungs-assistentin" },
+  { name: "Sabine Klein",  rolle: "Abrechnungs-helferin" },
+];
+
+const OEFFNUNGSZEITEN = [
+  { V: "08:00–13:00", N: "14:00–18:00", hatN: true  }, // Mo
+  { V: "08:00–15:00", N: "16:00–20:00", hatN: true  }, // Di
+  { V: "08:00–13:00", N: "",            hatN: false }, // Mi
+  { V: "08:00–13:00", N: "14:00–18:00", hatN: true  }, // Do
+  { V: "08:00–13:00", N: "",            hatN: false }, // Fr
+];
+
+const WT_KURZ  = ["Mo","Di","Mi","Do","Fr","Sa","So"];
+const WT_LANG  = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const MONAT_NAMEN = ["","Januar","Februar","März","April","Mai","Juni",
+                     "Juli","August","September","Oktober","November","Dezember"];
+const ZYKLUS = ["V","N","G","U","K","F"];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let heute = new Date();
+let anzeigeJahr  = heute.getFullYear();
+let anzeigeMonat = heute.getMonth() + 1;
+let plan = {};          // { "JJJJ-MM-TT": { "Name": "Code", ... } }
+let dragCode = null;
+
+const STORAGE_KEY = "dienstplan_v1";
+
+function ladeAusStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) plan = JSON.parse(raw);
+  } catch(e) {}
+}
+
+function speichere() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(plan)); } catch(e) {}
+}
+
+// ── Hilfsfunktionen ───────────────────────────────────────────────────────────
+function tageImMonat(j, m) { return new Date(j, m, 0).getDate(); }
+
+function defaultCode(wochentag) {
+  if (wochentag >= 5) return "F";
+  return OEFFNUNGSZEITEN[wochentag].hatN ? "G" : "V";
+}
+
+function getCode(tagStr, person) {
+  return (plan[tagStr] && plan[tagStr][person]) || null;
+}
+
+function setCode(tagStr, person, code) {
+  if (!plan[tagStr]) plan[tagStr] = {};
+  plan[tagStr][person] = code;
+  speichere();
+}
+
+function initPlan(j, m) {
+  const tage = tageImMonat(j, m);
+  for (let t = 1; t <= tage; t++) {
+    const tag  = new Date(j, m-1, t);
+    const wt   = tag.getDay(); // 0=So,1=Mo,...
+    const wt5  = (wt + 6) % 7; // Mo=0..So=6
+    const str  = isoStr(j, m, t);
+    if (!plan[str]) plan[str] = {};
+    MITARBEITER.forEach(ma => {
+      if (!plan[str][ma.name]) {
+        plan[str][ma.name] = defaultCode(wt5);
+      }
+    });
+  }
+  speichere();
+}
+
+function isoStr(j, m, t) {
+  return `${j}-${String(m).padStart(2,'0')}-${String(t).padStart(2,'0')}`;
+}
+
+function nextCode(current) {
+  const idx = ZYKLUS.indexOf(current);
+  return ZYKLUS[(idx + 1) % ZYKLUS.length];
+}
+
+// ── Tabelle aufbauen ──────────────────────────────────────────────────────────
+function baueTabelle(j, m) {
+  initPlan(j, m);
+  const thead = document.getElementById("thead");
+  const tbody = document.getElementById("tbody");
+  const tfoot = document.getElementById("tfoot");
+  thead.innerHTML = ""; tbody.innerHTML = ""; tfoot.innerHTML = "";
+
+  document.getElementById("monat-label").textContent = `${MONAT_NAMEN[m]} ${j}`;
+
+  // Kopfzeile Namen
+  const tr1 = document.createElement("tr");
+  ["Datum","","Öffnungszeit"].forEach(h => {
+    const th = document.createElement("th"); th.textContent = h; tr1.appendChild(th);
+  });
+  MITARBEITER.forEach(ma => {
+    const th = document.createElement("th");
+    th.innerHTML = `${ma.name}<br><span class="rolle">${ma.rolle}</span>`;
+    tr1.appendChild(th);
+  });
+  thead.appendChild(tr1);
+
+  // Datenzeilen
+  const tage = tageImMonat(j, m);
+  for (let t = 1; t <= tage; t++) {
+    const tag  = new Date(j, m-1, t);
+    const wt   = tag.getDay();
+    const wt5  = (wt + 6) % 7;
+    const str  = isoStr(j, m, t);
+    const isWE = wt5 >= 5;
+
+    const tr = document.createElement("tr");
+    if (isWE) tr.classList.add("wochenende");
+
+    // Datum
+    const tdDatum = document.createElement("td");
+    tdDatum.className = "datum";
+    tdDatum.textContent = `${String(t).padStart(2,'0')}.${String(m).padStart(2,'0')} ${WT_KURZ[wt5]}`;
+    tr.appendChild(tdDatum);
+
+    // KW
+    const tdKW = document.createElement("td");
+    tdKW.style.fontSize = "11px"; tdKW.style.color = "#888";
+    tdKW.textContent = isWE ? "" : `KW${kw(tag)}`;
+    tr.appendChild(tdKW);
+
+    // Öffnungszeit
+    const tdOez = document.createElement("td");
+    tdOez.className = "oez";
+    if (!isWE) {
+      const oez = OEFFNUNGSZEITEN[wt5];
+      tdOez.textContent = oez.hatN ? `${oez.V} / ${oez.N}` : oez.V;
+    }
+    tr.appendChild(tdOez);
+
+    // Schicht-Zellen
+    MITARBEITER.forEach(ma => {
+      const code = getCode(str, ma.name) || defaultCode(wt5);
+      const td = document.createElement("td");
+      td.className = `schicht-cell s-${isWE ? "WE" : code}${isWE ? " we" : ""}`;
+      td.dataset.tag = str; td.dataset.person = ma.name; td.dataset.wt5 = wt5;
+      td.textContent = isWE ? "" : code;
+
+      if (!isWE) {
+        // Klick = nächster Zyklus
+        td.addEventListener("click", () => {
+          const cur = getCode(str, ma.name) || defaultCode(wt5);
+          const next = nextCode(cur);
+          setCode(str, ma.name, next);
+          aktualisiereZelle(td, next);
+          aktualisiereStatistik(j, m);
+        });
+        // Drag-over
+        td.addEventListener("dragover", e => { e.preventDefault(); td.classList.add("dragover"); });
+        td.addEventListener("dragleave", () => td.classList.remove("dragover"));
+        td.addEventListener("drop", e => {
+          e.preventDefault();
+          td.classList.remove("dragover");
+          if (dragCode) {
+            setCode(str, ma.name, dragCode);
+            aktualisiereZelle(td, dragCode);
+            aktualisiereStatistik(j, m);
+          }
+        });
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+
+  // Statistik
+  baueStatistik(j, m);
+}
+
+function aktualisiereZelle(td, code) {
+  td.className = `schicht-cell s-${code}`;
+  td.textContent = code;
+}
+
+function kw(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return String(Math.ceil((((d - yearStart) / 86400000) + 1) / 7)).padStart(2,'0');
+}
+
+// ── Statistik ─────────────────────────────────────────────────────────────────
+function baueStatistik(j, m) {
+  const tfoot = document.getElementById("tfoot");
+  tfoot.innerHTML = "";
+
+  const codes = ["G","V","N","U","K","F"];
+  const labels = { G:"Ganztag", V:"Vormittag", N:"Nachmittag", U:"Urlaub", K:"Krankheit", F:"Frei" };
+
+  codes.forEach(code => {
+    const tr = document.createElement("tr");
+    const tdL = document.createElement("td");
+    tdL.colSpan = 3; tdL.className = "stat-label";
+    tdL.textContent = labels[code];
+    tr.appendChild(tdL);
+
+    MITARBEITER.forEach(ma => {
+      let count = 0;
+      const tage = tageImMonat(j, m);
+      for (let t = 1; t <= tage; t++) {
+        const str = isoStr(j, m, t);
+        const tag = new Date(j, m-1, t);
+        const wt5 = (tag.getDay() + 6) % 7;
+        if (wt5 >= 5) continue;
+        const c = getCode(str, ma.name) || defaultCode(wt5);
+        if (c === code) count++;
+      }
+      const td = document.createElement("td");
+      td.className = `s-${code}`;
+      td.textContent = count > 0 ? count : "";
+      tr.appendChild(td);
+    });
+    tfoot.appendChild(tr);
+  });
+}
+
+function aktualisiereStatistik(j, m) {
+  baueStatistik(j, m);
+}
+
+// ── Drag von Chips ────────────────────────────────────────────────────────────
+document.querySelectorAll(".schicht-chip").forEach(chip => {
+  chip.addEventListener("dragstart", e => {
+    dragCode = chip.dataset.code;
+    chip.classList.add("dragging");
+    e.dataTransfer.setData("text/plain", dragCode);
+    e.dataTransfer.effectAllowed = "copy";
+  });
+  chip.addEventListener("dragend", () => chip.classList.remove("dragging"));
+});
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+document.getElementById("btn-prev").addEventListener("click", () => {
+  anzeigeMonat--;
+  if (anzeigeMonat < 1) { anzeigeMonat = 12; anzeigeJahr--; }
+  baueTabelle(anzeigeJahr, anzeigeMonat);
+});
+document.getElementById("btn-next").addEventListener("click", () => {
+  anzeigeMonat++;
+  if (anzeigeMonat > 12) { anzeigeMonat = 1; anzeigeJahr++; }
+  baueTabelle(anzeigeJahr, anzeigeMonat);
+});
+
+// ── Excel-Export ──────────────────────────────────────────────────────────────
+document.getElementById("btn-export").addEventListener("click", () => {
+  const j = anzeigeJahr, m = anzeigeMonat;
+  const wb = XLSX.utils.book_new();
+
+  // Hauptblatt
+  const rows = [];
+  const header = ["Datum","Wochentag","Öffnungszeit", ...MITARBEITER.map(ma => ma.name)];
+  rows.push(header);
+
+  const tage = tageImMonat(j, m);
+  for (let t = 1; t <= tage; t++) {
+    const tag  = new Date(j, m-1, t);
+    const wt5  = (tag.getDay() + 6) % 7;
+    const str  = isoStr(j, m, t);
+    const isWE = wt5 >= 5;
+    let oezStr = "";
+    if (!isWE) {
+      const oez = OEFFNUNGSZEITEN[wt5];
+      oezStr = oez.hatN ? `${oez.V} / ${oez.N}` : oez.V;
+    }
+    const row = [
+      `${String(t).padStart(2,'0')}.${String(m).padStart(2,'0')}.${j}`,
+      WT_LANG[wt5],
+      oezStr,
+      ...MITARBEITER.map(ma => isWE ? "" : (getCode(str, ma.name) || defaultCode(wt5)))
+    ];
+    rows.push(row);
+  }
+
+  // Statistikzeilen
+  rows.push([]);
+  rows.push(["Statistik", "", "", ...MITARBEITER.map(ma => ma.name)]);
+  ["G","V","N","U","K","F"].forEach(code => {
+    const labels = {G:"Ganztag",V:"Vormittag",N:"Nachmittag",U:"Urlaub",K:"Krankheit",F:"Frei"};
+    const row = [labels[code], "", ""];
+    MITARBEITER.forEach(ma => {
+      let count = 0;
+      for (let t = 1; t <= tage; t++) {
+        const str = isoStr(j, m, t);
+        const tag = new Date(j, m-1, t);
+        const wt5 = (tag.getDay() + 6) % 7;
+        if (wt5 >= 5) continue;
+        if ((getCode(str, ma.name) || defaultCode(wt5)) === code) count++;
+      }
+      row.push(count);
+    });
+    rows.push(row);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  // Spaltenbreiten
+  ws["!cols"] = [
+    {wch:14},{wch:12},{wch:22},
+    ...MITARBEITER.map(() => ({wch:16}))
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, `${MONAT_NAMEN[m]} ${j}`);
+  XLSX.writeFile(wb, `dienstplan_${j}-${String(m).padStart(2,'0')}.xlsx`);
+  toast("Excel-Datei gespeichert!");
+});
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2500);
+}
+
+// ── Start ─────────────────────────────────────────────────────────────────────
+ladeAusStorage();
+// Starte mit Juni 2025 (wo die Demo-Daten liegen)
+anzeigeJahr = 2025; anzeigeMonat = 6;
+baueTabelle(anzeigeJahr, anzeigeMonat);
+</script>
+</body>
+</html>
