@@ -1,0 +1,244 @@
+{
+  "mitarbeiter": [
+    {
+      "name": "Dr. Schmidt",
+      "rolle": "Zahnärztin",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Dr. Müller",
+      "rolle": "Zahnarzt",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Anna Weber",
+      "rolle": "ZFA",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Lisa Braun",
+      "rolle": "ZFA",
+      "stunden_woche": 30
+    },
+    {
+      "name": "Jana Koch",
+      "rolle": "Empfang",
+      "stunden_woche": 20
+    }
+  ],
+  "abwesenheiten": {},
+  "plaene": {
+    "2025-06": {
+      "2025-06-01": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-02": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-03": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-04": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-05": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-06": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-07": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-08": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-09": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-10": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-11": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-12": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-13": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-14": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-15": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-16": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-17": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-18": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-19": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-20": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-21": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-22": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-23": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-24": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-25": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-26": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-27": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      },
+      "2025-06-28": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-29": {
+        "Dr. Schmidt": "F",
+        "Dr. Müller": "F",
+        "Anna Weber": "F",
+        "Lisa Braun": "F",
+        "Jana Koch": "F"
+      },
+      "2025-06-30": {
+        "Dr. Schmidt": "G",
+        "Dr. Müller": "G",
+        "Anna Weber": "G",
+        "Lisa Braun": "G",
+        "Jana Koch": "G"
+      }
+    }
+  }
+}
