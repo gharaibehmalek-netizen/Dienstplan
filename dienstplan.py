@@ -22,9 +22,9 @@ except ImportError:
 DATA_FILE = Path("praxis_daten.json")
 
 SCHICHTEN = {
-    "V": {"name": "Vormittag",  "zeiten": "08:00–13:00"},
-    "N": {"name": "Nachmittag", "zeiten": "14:00–18:00"},
-    "G": {"name": "Ganztag",    "zeiten": "08:00–18:00"},
+    "V": {"name": "Vormittag",  "zeiten": "08:00–14:00"},
+    "N": {"name": "Nachmittag", "zeiten": "14:00–20:00"},
+    "G": {"name": "Ganztag",    "zeiten": "08:00–20:00"},
     "U": {"name": "Urlaub",     "zeiten": ""},
     "K": {"name": "Krankheit",  "zeiten": ""},
     "F": {"name": "Frei",       "zeiten": ""},
@@ -247,7 +247,7 @@ def schichten_bearbeiten(daten: dict, jahr: int, monat: int):
     plan = daten.get("plaene", {}).get(plan_key, {})
     ma_liste = daten.get("mitarbeiter", [])
 
-    print("\n  Schichtcodes: V=Vormittag  N=Nachmittag  G=Ganztag  U=Urlaub  K=Krankheit  F=Frei")
+    print("\n  Schichtcodes: V=Vormittag(8-14)  N=Nachmittag(14-20)  G=Ganztag(8-20)  U=Urlaub  K=Krankheit  F=Frei")
     print("  Eingabe: JJJJ-MM-TT [leer=Ende]")
 
     while True:
@@ -325,7 +325,7 @@ def drucke_monatsplan(daten: dict, jahr: int, monat: int):
         print(zeile)
 
     print(f"{'='*80}")
-    print("\n  Legende: V=Vormittag(8-13)  N=Nachmittag(14-18)  G=Ganztag  U=Urlaub  K=Krankheit  F=Frei")
+    print("\n  Legende: V=Vormittag(8-14)  N=Nachmittag(14-20)  G=Ganztag(8-20)  U=Urlaub  K=Krankheit  F=Frei")
 
     # Statistik
     print(f"\n  Statistik {monat_name} {jahr}:")
