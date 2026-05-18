@@ -132,12 +132,13 @@ def abwesenheit_erfassen(daten: dict, art: str):
     tage_eingetragen = 0
     tag = von
     while tag <= bis:
-        key = tag.isoformat()
-        if key not in abw:
-            abw[key] = {}
-        abw[key][person] = art
+        if tag.weekday() < 5:  # nur Mo-Fr
+            key = tag.isoformat()
+            if key not in abw:
+                abw[key] = {}
+            abw[key][person] = art
+            tage_eingetragen += 1
         tag += timedelta(days=1)
-        tage_eingetragen += 1
 
     speichere_daten(daten)
     art_name = "Urlaub" if art == "U" else "Krankheit"
@@ -295,7 +296,7 @@ def drucke_monatsplan(daten: dict, jahr: int, monat: int):
     monat_name = ["", "Januar", "Februar", "März", "April", "Mai", "Juni",
                   "Juli", "August", "September", "Oktober", "November", "Dezember"][monat]
     print(f"\n{'='*80}")
-    print(f"  DIENSTPLAN {monat_name} {jahr}  |  Zahnarztpraxis")
+    print(f"  DIENSTPLAN {monat_name} {jahr}  |  Zahnarztpraxis  |  Mo–Fr  08:00–20:00 Uhr")
     print(f"{'='*80}")
 
     namen = [m["name"] for m in ma_liste]
@@ -363,7 +364,7 @@ def exportiere_excel(daten: dict, jahr: int, monat: int):
     # Titelzeile
     ws.merge_cells(f"A1:{get_column_letter(3 + len(ma_liste))}1")
     title_cell = ws["A1"]
-    title_cell.value = f"Dienstplan {monat_name} {jahr} – Zahnarztpraxis"
+    title_cell.value = f"Dienstplan {monat_name} {jahr} – Zahnarztpraxis  |  Mo–Fr  08:00–20:00 Uhr"
     title_cell.font = Font(bold=True, size=14)
     title_cell.alignment = Alignment(horizontal="center")
 
