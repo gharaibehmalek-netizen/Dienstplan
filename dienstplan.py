@@ -22,12 +22,22 @@ except ImportError:
 DATA_FILE = Path("praxis_daten.json")
 
 SCHICHTEN = {
-    "V": {"name": "Vormittag",  "zeiten": "08:00–14:00"},
-    "N": {"name": "Nachmittag", "zeiten": "14:00–20:00"},
-    "G": {"name": "Ganztag",    "zeiten": "08:00–20:00"},
+    "V": {"name": "Vormittag",  "zeiten": "variabel je Tag"},
+    "N": {"name": "Nachmittag", "zeiten": "variabel je Tag"},
+    "G": {"name": "Ganztag",    "zeiten": "V + N kombiniert"},
     "U": {"name": "Urlaub",     "zeiten": ""},
     "K": {"name": "Krankheit",  "zeiten": ""},
     "F": {"name": "Frei",       "zeiten": ""},
+}
+
+# Echte Praxis-Öffnungszeiten: Ida-Sophie Kranz & Kollegen, Essen
+# Mo: 08-13 + 14-18 | Di: 08-12 + 16-20 | Mi: 08-13 | Do: 08-13 + 14-18 | Fr: 08-13
+OEFFNUNGSZEITEN = {
+    0: {"name": "Montag",     "V": "08:00–13:00", "N": "14:00–18:00", "hat_N": True},
+    1: {"name": "Dienstag",   "V": "08:00–15:00", "N": "16:00–20:00", "hat_N": True},
+    2: {"name": "Mittwoch",   "V": "08:00–13:00", "N": "",            "hat_N": False},
+    3: {"name": "Donnerstag", "V": "08:00–13:00", "N": "14:00–18:00", "hat_N": True},
+    4: {"name": "Freitag",    "V": "08:00–13:00", "N": "",            "hat_N": False},
 }
 
 FARBEN = {
@@ -207,25 +217,27 @@ def erstelle_monatsplan(daten: dict):
     plan_key = f"{jahr}-{monat:02d}"
     plan = plaene.setdefault(plan_key, {})
 
-    # Standard-Schichten fuer jeden Mitarbeiter pro Tag setzen
+    # Standard-Schichten gemaess echten Praxisoeffnungszeiten setzen
     for tag_nr in range(1, tage_im_monat + 1):
         tag = date(jahr, monat, tag_nr)
         tag_str = tag.isoformat()
-        ist_wochenende = tag.weekday() >= 5
+        wt = tag.weekday()
+        ist_wochenende = wt >= 5
 
         for ma in ma_liste:
             person = ma["name"]
             if tag_str not in plan:
                 plan[tag_str] = {}
             if person not in plan[tag_str]:
-                # Abwesenheit pruefen
                 abw_art = abw.get(tag_str, {}).get(person)
                 if abw_art:
                     plan[tag_str][person] = abw_art
                 elif ist_wochenende:
                     plan[tag_str][person] = "F"
+                elif OEFFNUNGSZEITEN[wt]["hat_N"]:
+                    plan[tag_str][person] = "G"   # Ganztag (V+N)
                 else:
-                    plan[tag_str][person] = "G"  # Standard: Ganztag
+                    plan[tag_str][person] = "V"   # nur Vormittag (Mi, Fr)
 
     speichere_daten(daten)
     print(f"  ✓ Plan für {monat:02d}/{jahr} initialisiert.")
@@ -296,7 +308,7 @@ def drucke_monatsplan(daten: dict, jahr: int, monat: int):
     monat_name = ["", "Januar", "Februar", "März", "April", "Mai", "Juni",
                   "Juli", "August", "September", "Oktober", "November", "Dezember"][monat]
     print(f"\n{'='*80}")
-    print(f"  DIENSTPLAN {monat_name} {jahr}  |  Zahnarztpraxis  |  Mo–Fr  08:00–20:00 Uhr")
+    print(f"  DIENSTPLAN {monat_name} {jahr}  |  Ida-Sophie Kranz & Kollegen, Essen")
     print(f"{'='*80}")
 
     namen = [m["name"] for m in ma_liste]
@@ -323,10 +335,17 @@ def drucke_monatsplan(daten: dict, jahr: int, monat: int):
 
         if ist_we:
             zeile += "  (Wochenende)"
+        else:
+            oez = OEFFNUNGSZEITEN[tag.weekday()]
+            if oez["hat_N"]:
+                zeile += f"  [{oez['V']} / {oez['N']}]"
+            else:
+                zeile += f"  [{oez['V']}]"
         print(zeile)
 
     print(f"{'='*80}")
-    print("\n  Legende: V=Vormittag(8-14)  N=Nachmittag(14-20)  G=Ganztag(8-20)  U=Urlaub  K=Krankheit  F=Frei")
+    print("\n  Legende: V=Vormittag  N=Nachmittag  G=Ganztag(V+N)  U=Urlaub  K=Krankheit  F=Frei")
+    print("  Öffnungszeiten: Mo 08-13+14-18 | Di 08-15+16-20 | Mi 08-13 | Do 08-13+14-18 | Fr 08-13")
 
     # Statistik
     print(f"\n  Statistik {monat_name} {jahr}:")
@@ -364,12 +383,15 @@ def exportiere_excel(daten: dict, jahr: int, monat: int):
     # Titelzeile
     ws.merge_cells(f"A1:{get_column_letter(3 + len(ma_liste))}1")
     title_cell = ws["A1"]
-    title_cell.value = f"Dienstplan {monat_name} {jahr} – Zahnarztpraxis  |  Mo–Fr  08:00–20:00 Uhr"
+    title_cell.value = (
+        f"Dienstplan {monat_name} {jahr} – Ida-Sophie Kranz & Kollegen, Essen  |  "
+        "Mo/Do: 08-13+14-18  |  Di: 08-15+16-20  |  Mi/Fr: 08-13"
+    )
     title_cell.font = Font(bold=True, size=14)
     title_cell.alignment = Alignment(horizontal="center")
 
     # Kopfzeile
-    headers = ["Datum", "Wochentag", "KW"] + [m["name"] for m in ma_liste]
+    headers = ["Datum", "Wochentag", "KW", "Öffnungszeit"] + [m["name"] for m in ma_liste]
     thin = Side(style="thin")
     border = Border(left=thin, right=thin, top=thin, bottom=thin)
 
@@ -393,11 +415,20 @@ def exportiere_excel(daten: dict, jahr: int, monat: int):
         ws.cell(row=row, column=1, value=tag_str).border = border
         ws.cell(row=row, column=2, value=WOCHENTAGE[tag.weekday()]).border = border
         ws.cell(row=row, column=3, value=kw).border = border
+        if not ist_we:
+            oez = OEFFNUNGSZEITEN[tag.weekday()]
+            oez_str = f"{oez['V']}" + (f" / {oez['N']}" if oez["hat_N"] else "")
+        else:
+            oez_str = "–"
+        oez_cell = ws.cell(row=row, column=4, value=oez_str)
+        oez_cell.border = border
+        oez_cell.alignment = Alignment(horizontal="center")
+        oez_cell.fill = PatternFill("solid", fgColor=FARBEN["WE"] if ist_we else "FFFFFF")
 
         for col_off, ma in enumerate(ma_liste):
             person = ma["name"]
             code = plan.get(tag_str, {}).get(person, "F")
-            col = col_off + 4
+            col = col_off + 5
             cell = ws.cell(row=row, column=col)
             cell.value = code
             cell.alignment = Alignment(horizontal="center")
@@ -411,6 +442,7 @@ def exportiere_excel(daten: dict, jahr: int, monat: int):
             ws.cell(row=row, column=col).fill = PatternFill(
                 "solid", fgColor=FARBEN["WE"] if ist_we else "FFFFFF"
             )
+
 
     # Statistik-Blatt
     ws_stat = wb.create_sheet("Statistik")
@@ -453,11 +485,18 @@ def exportiere_excel(daten: dict, jahr: int, monat: int):
         ws_leg.cell(row=row, column=3, value=info["zeiten"])
         ws_leg.cell(row=row, column=1).fill = PatternFill("solid", fgColor=FARBEN.get(code, "FFFFFF"))
 
+    ws_leg.cell(row=9, column=1, value="Öffnungszeiten").font = Font(bold=True)
+    for row, (wt_nr, oez) in enumerate(OEFFNUNGSZEITEN.items(), 10):
+        zeiten = f"{oez['V']}" + (f" und {oez['N']}" if oez["hat_N"] else "")
+        ws_leg.cell(row=row, column=1, value=oez["name"])
+        ws_leg.cell(row=row, column=2, value=zeiten)
+
     # Spaltenbreiten anpassen
     ws.column_dimensions["A"].width = 13
     ws.column_dimensions["B"].width = 10
     ws.column_dimensions["C"].width = 5
-    for col in range(4, 4 + len(ma_liste)):
+    ws.column_dimensions["D"].width = 22
+    for col in range(5, 5 + len(ma_liste)):
         ws.column_dimensions[get_column_letter(col)].width = 15
 
     dateiname = f"dienstplan_{plan_key}.xlsx"
@@ -504,14 +543,21 @@ def main():
     if not daten["mitarbeiter"]:
         print("\n  Keine Daten vorhanden. Demo-Mitarbeiter werden angelegt...")
         daten["mitarbeiter"] = [
-            {"name": "Dr. Schmidt",    "rolle": "Zahnärztin",  "stunden_woche": 40},
-            {"name": "Dr. Müller",     "rolle": "Zahnarzt",    "stunden_woche": 40},
-            {"name": "Anna Weber",     "rolle": "ZFA",         "stunden_woche": 40},
-            {"name": "Lisa Braun",     "rolle": "ZFA",         "stunden_woche": 30},
-            {"name": "Jana Koch",      "rolle": "Empfang",     "stunden_woche": 20},
+            {"name": "Dr. Schmidt",      "rolle": "Zahnärztin",               "stunden_woche": 40},
+            {"name": "Dr. Hoffmann",     "rolle": "Zahnärztin",               "stunden_woche": 40},
+            {"name": "Dr. Wagner",       "rolle": "Zahnärztin",               "stunden_woche": 32},
+            {"name": "Sandra Becker",    "rolle": "Prophylaxeassistentin",    "stunden_woche": 40},
+            {"name": "Miriam Schulz",    "rolle": "Prophylaxeassistentin",    "stunden_woche": 30},
+            {"name": "Petra Lange",      "rolle": "Dentalhygienikerin",       "stunden_woche": 40},
+            {"name": "Anna Weber",       "rolle": "ZFA",                      "stunden_woche": 40},
+            {"name": "Lisa Braun",       "rolle": "ZFA",                      "stunden_woche": 40},
+            {"name": "Tanja Fischer",    "rolle": "ZFA",                      "stunden_woche": 30},
+            {"name": "Jana Koch",        "rolle": "Verwaltungsassistentin",   "stunden_woche": 40},
+            {"name": "Maria Richter",    "rolle": "Verwaltungsassistentin",   "stunden_woche": 20},
+            {"name": "Sabine Klein",     "rolle": "Abrechnungshelferin",      "stunden_woche": 30},
         ]
         speichere_daten(daten)
-        print("  ✓ 5 Demo-Mitarbeiter angelegt.")
+        print("  ✓ 12 Demo-Mitarbeiter angelegt.")
 
     while True:
         hauptmenue()

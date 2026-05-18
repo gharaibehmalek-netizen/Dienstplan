@@ -6,8 +6,28 @@
       "stunden_woche": 40
     },
     {
-      "name": "Dr. Müller",
-      "rolle": "Zahnarzt",
+      "name": "Dr. Hoffmann",
+      "rolle": "Zahnärztin",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Dr. Wagner",
+      "rolle": "Zahnärztin",
+      "stunden_woche": 32
+    },
+    {
+      "name": "Sandra Becker",
+      "rolle": "Prophylaxeassistentin",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Miriam Schulz",
+      "rolle": "Prophylaxeassistentin",
+      "stunden_woche": 30
+    },
+    {
+      "name": "Petra Lange",
+      "rolle": "Dentalhygienikerin",
       "stunden_woche": 40
     },
     {
@@ -18,12 +38,27 @@
     {
       "name": "Lisa Braun",
       "rolle": "ZFA",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Tanja Fischer",
+      "rolle": "ZFA",
       "stunden_woche": 30
     },
     {
       "name": "Jana Koch",
-      "rolle": "Empfang",
+      "rolle": "Verwaltungsassistentin",
+      "stunden_woche": 40
+    },
+    {
+      "name": "Maria Richter",
+      "rolle": "Verwaltungsassistentin",
       "stunden_woche": 20
+    },
+    {
+      "name": "Sabine Klein",
+      "rolle": "Abrechnungshelferin",
+      "stunden_woche": 30
     }
   ],
   "abwesenheiten": {},
@@ -31,213 +66,423 @@
     "2025-06": {
       "2025-06-01": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-02": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-03": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-04": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-05": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-06": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-07": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-08": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-09": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-10": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-11": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-12": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-13": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-14": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-15": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-16": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-17": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-18": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-19": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-20": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-21": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-22": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-23": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-24": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-25": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-26": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       },
       "2025-06-27": {
-        "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
-        "Anna Weber": "G",
-        "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Dr. Schmidt": "V",
+        "Dr. Hoffmann": "V",
+        "Dr. Wagner": "V",
+        "Sandra Becker": "V",
+        "Miriam Schulz": "V",
+        "Petra Lange": "V",
+        "Anna Weber": "V",
+        "Lisa Braun": "V",
+        "Tanja Fischer": "V",
+        "Jana Koch": "V",
+        "Maria Richter": "V",
+        "Sabine Klein": "V"
       },
       "2025-06-28": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-29": {
         "Dr. Schmidt": "F",
-        "Dr. Müller": "F",
+        "Dr. Hoffmann": "F",
+        "Dr. Wagner": "F",
+        "Sandra Becker": "F",
+        "Miriam Schulz": "F",
+        "Petra Lange": "F",
         "Anna Weber": "F",
         "Lisa Braun": "F",
-        "Jana Koch": "F"
+        "Tanja Fischer": "F",
+        "Jana Koch": "F",
+        "Maria Richter": "F",
+        "Sabine Klein": "F"
       },
       "2025-06-30": {
         "Dr. Schmidt": "G",
-        "Dr. Müller": "G",
+        "Dr. Hoffmann": "G",
+        "Dr. Wagner": "G",
+        "Sandra Becker": "G",
+        "Miriam Schulz": "G",
+        "Petra Lange": "G",
         "Anna Weber": "G",
         "Lisa Braun": "G",
-        "Jana Koch": "G"
+        "Tanja Fischer": "G",
+        "Jana Koch": "G",
+        "Maria Richter": "G",
+        "Sabine Klein": "G"
       }
     }
   }
